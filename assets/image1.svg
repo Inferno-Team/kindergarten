@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="408" height="679.001" viewBox="0 0 408 679.001">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#4349ff" stop-opacity="0.388"/>
+      <stop offset="1" stop-color="#9fa6ff" stop-opacity="0.631"/>
+    </linearGradient>
+    <filter id="iamge1" x="0" y="0" width="408" height="679.001" filterUnits="userSpaceOnUse">
+      <feOffset dy="-6" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#iamge1)">
+    <path id="iamge1-2" data-name="iamge1" d="M-375,621H-765V8a47.7,47.7,0,0,1,3.772-18.684,47.838,47.838,0,0,1,10.287-15.257,47.838,47.838,0,0,1,15.257-10.287A47.7,47.7,0,0,1-717-40h83.006A65.374,65.374,0,0,0-569.5,14a65.375,65.375,0,0,0,64.494-54H-423a47.7,47.7,0,0,1,18.684,3.772,47.84,47.84,0,0,1,15.257,10.287,47.839,47.839,0,0,1,10.287,15.257A47.7,47.7,0,0,1-375,8V621Z" transform="translate(774 55)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
