@@ -7,11 +7,13 @@ class MessageTemplate extends StatelessWidget {
   final Message message;
   final Function() onTap;
   final bool toSend;
+  final bool isSent;
   const MessageTemplate(
       {Key? key,
       required this.message,
       required this.onTap,
-      required this.toSend})
+      required this.toSend,
+      this.isSent = true})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,14 @@ class MessageTemplate extends StatelessWidget {
     Gradient? gradient;
     Color? background;
     Color textColor;
-    final width = message.text.length * size.width * 9 / 16 * 0.1;
+    double width = 0;
+    if (message.text.length > 31) {
+      width = 35 * size.width * 9 / 16 * 0.045;
+    } else {
+      width = message.text.length * size.width * 9 / 16 * 0.045;
+    }
+    if (toSend) width += 20;
+    // final width = message.text.length * size.width * 9 / 16 * 0.1;
 
     if (!toSend) {
       gradient = const LinearGradient(
@@ -60,7 +69,6 @@ class MessageTemplate extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
-          
           children: [
             Flexible(
               child: Container(
@@ -80,11 +88,24 @@ class MessageTemplate extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        CustomText(
-                          text: message.text,
-                          fontSize: 14,
-                          color: textColor,
-                          alignment: Alignment.topLeft,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            CustomText(
+                              text: message.text,
+                              fontSize: 13,
+                              color: textColor,
+                              alignment: Alignment.topLeft,
+                            ),
+                            toSend && !isSent
+                                ? GestureDetector(
+                                    onTap: onTap,
+                                    child: const Icon(Icons.send, size: 14),
+                                  )
+                                : Container()
+                          ],
                         ),
                         CustomText(
                           text: time,

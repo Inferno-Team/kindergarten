@@ -7,8 +7,10 @@ import 'package:kindergarten/ui/settings/settings_layout.dart';
 import 'package:kindergarten/utils/constaince.dart';
 
 class MainLayout extends GetWidget<HomeViewModel> {
+  
   @override
   Widget build(BuildContext context) {
+    controller.getMyStudents();
     return Obx(
       () => Scaffold(
         body: IndexedStack(

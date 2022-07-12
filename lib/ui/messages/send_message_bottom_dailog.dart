@@ -32,7 +32,7 @@ class MessageBottomDialog extends StatelessWidget {
           children: [
             Container(
               margin:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 25.0),
+                  const EdgeInsets.all(25),
               child: ListView(
                 children: [
                   for (var msg in messages)

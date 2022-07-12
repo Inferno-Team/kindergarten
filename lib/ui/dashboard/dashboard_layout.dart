@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:kindergarten/core/view_models/home_view_mode.dart';
-import 'package:kindergarten/core/view_models/student_view_model.dart';
 import 'package:kindergarten/models/student.dart';
 import 'package:kindergarten/ui/widgets/custom_dashboard_item.dart';
 import 'package:kindergarten/ui/widgets/custom_text.dart';
 
-class DashboardLayout extends StatelessWidget {
+class DashboardLayout extends GetWidget<HomeViewModel> {
   final Student student;
   DashboardLayout({Key? key, required this.student}) : super(key: key);
-  final HomeViewModel controller = Get.find(tag: "home_view_model_controller");
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final studentName = student.gender == 1 ? "اسم الطالب" : "اسم الطالبة";
-    const _image = 'assets/top_iamge.svg';
+
     return Stack(
       children: [
         SizedBox(
           height: size.height * 0.33,
           child: SvgPicture.asset(
-            _image,
+            'assets/top_iamge.svg',
             fit: BoxFit.fill,
           ),
         ),
@@ -34,7 +33,8 @@ class DashboardLayout extends StatelessWidget {
                   height: 64.0,
                   margin: const EdgeInsets.only(bottom: 8.0),
                   child: CustomText(
-                    text: "$studentName : ${student.name}",
+                    text:
+                        "$studentName : ${student.name}", // "$studentName : ${student.name}"
                     alignment: Alignment.topRight,
                     fontSize: 21,
                     color: Colors.white,
@@ -51,7 +51,7 @@ class DashboardLayout extends StatelessWidget {
                       DashBoardItem(
                         text: "الدفعات",
                         icon: Icons.money,
-                        onTap: () {},
+                        onTap: () => controller.moveToPymentPage(student),
                       ),
                       DashBoardItem(
                         text: "كاميرا الصف",
@@ -61,7 +61,7 @@ class DashboardLayout extends StatelessWidget {
                       DashBoardItem(
                         text: "جدول الدوام",
                         icon: Icons.calendar_today_rounded,
-                        onTap: () =>controller.moveToWeeklyCourses(student),
+                        onTap: () => controller.moveToWeeklyCourses(student),
                       ),
                       DashBoardItem(
                         text: "التقارير",
@@ -71,7 +71,7 @@ class DashboardLayout extends StatelessWidget {
                       DashBoardItem(
                         text: "مكان الباص",
                         icon: Icons.location_on,
-                        onTap: () {},
+                        onTap: () =>controller.moveToMapPage(student),
                       ),
                     ],
                   ),

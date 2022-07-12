@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kindergarten/models/message_response.dart';
 import 'package:kindergarten/ui/widgets/custom_text.dart';
-import 'package:kindergarten/utils/constaince.dart';
 
 class CustomMessage extends StatelessWidget {
   final Message message;
@@ -17,12 +16,12 @@ class CustomMessage extends StatelessWidget {
         time = "${diff.inDays ~/ 30} months";
         if (diff.inDays % 30 > 0) time += " , ${diff.inDays % 30} days";
       } else {
-        time = "${diff.inDays} dayes";
+        time = "${diff.inDays} days";
       }
     } else {
       if (diff.inHours > 0) {
         time = "${diff.inHours} hours";
-        if (diff.inMinutes > 0) {
+        if (diff.inMinutes % 60 > 0) {
           time += " , ${diff.inMinutes - (diff.inHours * 60)} minutes";
         }
       } else {
@@ -30,7 +29,12 @@ class CustomMessage extends StatelessWidget {
       }
     }
     time += " ago";
-    final width = message.text.length * size.width * 9 / 16 * 0.045;
+    double width = 0;
+    if (message.text.length > 31) {
+      width = 35 * size.width * 9 / 16 * 0.045;
+    } else {
+      width = message.text.length * size.width * 9 / 16 * 0.045;
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(

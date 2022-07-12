@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:kindergarten/core/view_models/student_view_model.dart';
 import 'package:kindergarten/models/student.dart';
 import 'package:kindergarten/models/weekly_course_response.dart';
-import 'package:kindergarten/ui/widgets/custom_text.dart';
+import 'package:kindergarten/utils/constaince.dart';
 
 class WeeklyLayout extends GetWidget<StudentViewModel> {
   final Student student;
@@ -13,51 +13,74 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
   @override
   Widget build(BuildContext context) {
     controller.getWeeklyCourses(student.id);
-    return Obx(() => Container(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: createCoursesTable(controller.weeklyCourses.value),
-            ),
+    return Obx(() => Directionality(
+          textDirection: TextDirection.rtl,
+          child: Stack(
+            children: [
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: loginColors,
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),
+                ),
+              ),
+              Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: createCoursesTable(controller.weeklyCourses.value),
+                  ),
+                ),
+              ),
+            ],
           ),
-        )));
+        ));
   }
 
   Widget createCoursesTable(List<WeeklyCourse> value) {
     final columns = [
-      "days",
-      "08:00-08:45",
-      "09:00-09:45",
-      "10:00-10:45"
+      "الأيام",
+      "الحصة الأولى",
+      "الحصة الثانية",
+      "الحصة الثالثة",
+      "الحصة الرابعة",
+      "الحصة الخامسة",
     ]; // مواقيت الدروس
+    for (WeeklyCourse courses in value) {
+      if (courses.courses.length < 5) {
+        int count = 5 - courses.courses.length;
+        for (var i = 0; i < count; i++) {
+          courses.courses.add('-');
+        }
+      }
+    }
+
+    var rows = getRows(value);
+    var colms = getColumns(columns);
     return DataTable(
-      columns: getColumns(columns),
-      rows: getRows(value),
+      columns: colms,
+      rows: rows,
     );
   }
 
   List<DataColumn> getColumns(List<String> value) =>
       value.map((e) => DataColumn(label: Text(e))).toList();
 
-  List<DataRow> getRows(List<WeeklyCourse> value) =>
-      value.map((WeeklyCourse course) {
+  List<DataRow> getRows(List<WeeklyCourse> value) => value.map((course) {
         final List<String> cells = [course.day];
+
         for (var item in course.courses) {
           cells.add(item);
         }
         return DataRow(cells: getCells(cells));
       }).toList();
 
-  List<DataCell> getCells(List<String> cells) => cells
-      .map(
-        (e) => DataCell(
-          Text(
-            e,
-          ),
-        ),
-      )
-      .toList();
+  List<DataCell> getCells(List<String> cells) =>
+      cells.map((e) => DataCell(Text(e))).toList();
 }

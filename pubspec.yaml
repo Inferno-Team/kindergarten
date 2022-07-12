@@ -45,7 +45,8 @@ dependencies:
   flutter_vlc_player: ^7.1.1
   flutter_sms: ^2.3.2
   sqflite: ^2.0.2+1
-  # permission_handler: ^5.0.1+1
+  flutter_map: ^1.1.1
+  latlong2: ^0.8.1
 flutter_icons:
   android: true
   image_path: "icons/kinder_logo.png"

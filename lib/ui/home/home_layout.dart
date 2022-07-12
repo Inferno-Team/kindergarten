@@ -4,9 +4,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:kindergarten/core/view_models/home_view_mode.dart';
 import 'package:kindergarten/core/view_models/student_view_model.dart';
+import 'package:kindergarten/ui/dashboard/annual_evaluation_layout.dart';
 import 'package:kindergarten/ui/dashboard/camera_layout.dart';
+import 'package:kindergarten/ui/dashboard/courses_evaluation_layout.dart';
 
 import 'package:kindergarten/ui/dashboard/dashboard_layout.dart';
+import 'package:kindergarten/ui/dashboard/map_layout.dart';
+import 'package:kindergarten/ui/dashboard/pyment_layout.dart';
 import 'package:kindergarten/ui/dashboard/reports_layout.dart';
 import 'package:kindergarten/ui/dashboard/weekly_course_layout.dart';
 import 'package:kindergarten/ui/widgets/custom_student.dart';
@@ -21,7 +25,7 @@ class Home extends GetWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context) {
     const _logoSvg = 'assets/home_logo.svg';
-    controller.getMyStudents();
+    Get.put(controller, tag: "HomeViewModel");
     controller.pageRoute.value = "/";
     final size = MediaQuery.of(context).size;
     return WillPopScope(
@@ -43,6 +47,14 @@ class Home extends GetWidget<HomeViewModel> {
           return ReportsPage(student: controller.args);
         } else if (controller.pageRoute.value == "/dashboard/weekly") {
           return WeeklyLayout(student: controller.args);
+        } else if (controller.pageRoute.value == "/dashboard/map") {
+          return MapLayout(student: controller.args);
+        } else if (controller.pageRoute.value == "/dashboard/payment") {
+          return PaymentLayout(student: controller.args);
+        } else if (controller.pageRoute.value == "/dashboard/reports/courses") {
+          return CoursesEvaluaionLayout(student: controller.args);
+        } else if (controller.pageRoute.value == "/dashboard/reports/annual") {
+          return AnnualEvaluaionLayout(student: controller.args);
         } else {
           return Container();
         }

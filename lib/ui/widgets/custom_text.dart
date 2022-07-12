@@ -23,6 +23,7 @@ class CustomText extends StatelessWidget {
       margin: const EdgeInsets.all(12.0),
       child: Text(
         text,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: color,
           fontSize: fontSize,

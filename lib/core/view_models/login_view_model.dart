@@ -3,32 +3,33 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kindergarten/core/services/data_service.dart';
 import 'package:kindergarten/models/login_response.dart';
+import 'package:kindergarten/ui/home/home_layout.dart';
+import 'package:kindergarten/ui/login/login_layout.dart';
 import 'package:kindergarten/ui/main_layout/main_layout.dart';
 import 'package:kindergarten/utils/cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 class LoginViewModel extends GetxController with CacheManager {
-  String? email, password;
+  final email = "".obs, password = "".obs;
   final _service = DataService();
-  final loginResponse = LoginResponse().obs;
+  final loginResponse = LoginResponse.empty().obs;
   final _loading = 0.obs;
-  final isLogged = true.obs;
+  final remamberMe = false.obs;
+  final isLogged = false.obs;
   final visibilityIcon = true.obs;
   get loading => _loading.value;
 
-  void logOut() {
-    isLogged.value = false;
-    removeToken();
-  }
-
   void login() async {
     _loading.value = 1;
-    loginResponse.value = await _service.login(email!, password!);
+    loginResponse.value = await _service.login(email.value, password.value);
+    // loginResponse.value = await _service.fakeLogin();
     _loading.value = 2;
-    if (loginResponse.value.code == 200) {
-      await saveToken(loginResponse.value.token);
-      Get.offAll(() =>  MainLayout());
+    
+    if (loginResponse.value.status) {
+      await saveToken(loginResponse.value.parent.token,
+          loginResponse.value.parent.id, remamberMe.value);
+      Get.offAll(() => MainLayout());
     } else {
       Fluttertoast.showToast(
         msg: loginResponse.value.message,
@@ -38,9 +39,12 @@ class LoginViewModel extends GetxController with CacheManager {
 
   Future<void> checkLoginStatus() async {
     final token = getToken();
-    print(token);
-    if (token != null) {
+    final re = isRemamberMe();
+    print('remamber me :$re');
+    if (token != null && re != null && re != false) {
       isLogged.value = true;
+    } else {
+      isLogged.value = false;
     }
     return await null;
   }
@@ -48,11 +52,11 @@ class LoginViewModel extends GetxController with CacheManager {
   Future<void> scanQR() async {
     try {
       String? value = await scanner.scan();
-      
+
       if (value != null) {
         var scannedValue = value.split(",");
-        email = scannedValue[0];
-        password = scannedValue[1];
+        email.value = scannedValue[0];
+        password.value = scannedValue[1];
         login();
       } else {}
       // var data = scannedQRcode.split(",");

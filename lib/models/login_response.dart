@@ -1,15 +1,30 @@
-class LoginResponse {
+class Parent {
+  final int id;
   final String token;
-  final int code;
+  Parent({required this.id, required this.token});
+  factory Parent.fromJson(dynamic json) {
+    final int id = json['id'] ?? -1;
+    final String token = json['api_token'] ?? "";
+    return Parent(token: token, id: id);
+  }
+  factory Parent.empty() {
+    return Parent(id: -2, token: "");
+  }
+}
+
+class LoginResponse {
+  final Parent parent;
+  final bool status;
   final String message;
-  LoginResponse(
-      {this.token = "", this.code = 0, this.message = ""});
+  LoginResponse({required this.parent, this.status = false, this.message = ""});
 
   factory LoginResponse.fromJson(dynamic json) {
-    var _token = json['token'] ?? "";
-    var _code = json['code'] ?? 300;
+    var parent = Parent.fromJson(json['parent']);
+    var _code = json['status'] ?? false;
     var _message = json['message'] ?? "";
-    return LoginResponse(
-        token: _token, code: _code, message: _message);
+    return LoginResponse(parent: parent, status: _code, message: _message);
+  }
+  factory LoginResponse.empty() {
+    return LoginResponse(parent: Parent.empty());
   }
 }

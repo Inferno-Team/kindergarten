@@ -4,7 +4,7 @@ import 'package:kindergarten/ui/widgets/custom_text.dart';
 
 class CustomStudent extends StatelessWidget {
   final Student student;
-  final Function onTap;
+  final Function()? onTap;
   const CustomStudent({Key? key, required this.student, required this.onTap})
       : super(key: key);
   @override
@@ -12,9 +12,7 @@ class CustomStudent extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final studentName = student.gender == 1 ? "اسم الطالب" : "اسم الطالبة";
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
+      onTap:  onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Card(

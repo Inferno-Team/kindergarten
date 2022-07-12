@@ -1,48 +1,70 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:kindergarten/core/services/data_service.dart';
 import 'package:kindergarten/core/services/database.dart';
 import 'package:kindergarten/models/message_response.dart';
 import 'package:kindergarten/models/student.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+import 'package:kindergarten/utils/cache_manager.dart';
 
-class HomeViewModel extends GetxController {
+// import 'package:sms/sms.dart';
+class HomeViewModel extends GetxController with CacheManager {
   final _service = DataService();
   final _index = 0.obs;
   final _studentList = <Student>[].obs;
   final _arguments = Object().obs;
   final pageRoute = "/".obs;
-  final messageResponse = <MessageType>[].obs;
-  final DatabaseHelper _database = DatabaseHelper();
+  final messageResponse = <List<Message>>[].obs;
+  final phoneNumber = ''.obs;
+  late DatabaseHelper _database;
   final localMessages = <Message>[].obs;
+  final sentLocalMessages = <Message>[].obs;
+  final _isMassesageLoading = false.obs;
 
   get args => _arguments.value;
   get index => _index.value;
+  bool get isMassesageLoading => _isMassesageLoading.value;
   List<Student> get studentList => _studentList.value;
 
-  final _titles = [
-    "Home",
-    "Messages",
-    "Settings",
-  ];
+  @override
+  void onInit() async {
+    super.onInit();
+    _database = DatabaseHelper();
 
-  getMessages() async {
-    // var token  = getToken()!;
-    messageResponse.value = [];
-    await Future.delayed(Duration(milliseconds: 300));
-    messageResponse.value = (await (_service.getMessages(''))).messages;
+    await _database.initDatabase();
   }
 
-  final _tabName = "Home".obs;
-  get title => _tabName.value;
+  getLocalMessageFromDatabase() async {
+    final futureMsg = await _database.queryAllRows();
+
+    localMessages.value = futureMsg.map((e) => Message.fromJson(e)).toList();
+  }
+
+  getPhoneNumber() async {
+    phoneNumber.value = (await _database.getPhoneNumber())[0]['value'];
+  }
+
+  getMessages() async {
+    var token = getToken() ?? '';
+    String userId = getUserId() ?? "-1";
+
+    messageResponse.value = [];
+    messageResponse.value =
+        (await (_service.getMessages(token, userId))).messages;
+    final list = await _database.getAllSentMessages();
+    print("getAllSentMessages $list");
+    sentLocalMessages.value = list.map((e) => Message.fromJson(e)).toList();
+  }
+
   onTab(int index) {
     _index.value = index;
-    _tabName.value = _titles[index];
+    if (index == 0) getMyStudents();
     if (index == 1) getMessages();
   }
 
   moveToStudentPage(Student student) {
     // [ /dashboard ]
     pageRoute.value += "dashboard";
-    _tabName.value = student.name;
     _arguments.value = student;
   }
 
@@ -64,7 +86,9 @@ class HomeViewModel extends GetxController {
 
   onBackPressed() {
     final routes = pageRoute.value.split("/"); // /dashboard ['']
-    routes.remove(routes[routes.length - 1]); // //dasboard
+    final index = routes.length - 1;
+    final removedRoute = routes[index];
+    routes.remove(removedRoute); // //dasboard
     print(routes);
     String finalRoute = "";
     for (var i = 0; i < routes.length; i++) {
@@ -82,32 +106,53 @@ class HomeViewModel extends GetxController {
 
   moveToHome() {
     pageRoute.value = "home";
-    _tabName.value = "Home";
   }
 
   getMyStudents() async {
-    _studentList.value = await _service.getMyStudents();
-  }
-
-  getLocalMessageFromDatabase() async {
-    final futureMsg = await _database.queryAllRows();
-    localMessages.value = futureMsg.map((e) => Message.fromJson(e)).toList();
+    String token = getToken() ?? '';
+    String userId = getUserId() ?? "-1";
+    _studentList.value = await _service.getMyStudents(token, userId);
   }
 
   sendMessage(Message msg) {
     msg.createdAt = DateTime.now();
-    List<MessageType> response = messageResponse.value;
-    MessageType type = MessageType(type: 'send', messages: [msg]);
-    var found = false;
-    for (var element in response) {
-      if (element.type == 'send') {
-        found = true;
-        element.messages.add(msg);
-        break;
-      }
-    }
-    if (!found) response.add(type);
-    messageResponse.value = response;
+
+    List<Message> type = messageResponse.last;
+
+    // add new messages array.
+    messageResponse.remove(type);
+    type.add(msg);
+    messageResponse.add(type);
+
     Get.close(1);
+  }
+
+  sendSMSTo(Message msg) async {
+    await getPhoneNumber();
+    List<String> recipents = [phoneNumber.value]; // numbers
+    String _result = await sendSMS(message: msg.text, recipients: recipents)
+        .catchError((onError) => print(onError));
+    await _database.insertSentMessage(msg);
+    Fluttertoast.showToast(msg: _result);
+  }
+
+  moveToMapPage(Student student) async {
+    pageRoute.value += "/map";
+    _arguments.value = student;
+  }
+
+  moveToPymentPage(Student student) {
+    pageRoute.value += "/payment";
+    _arguments.value = student;
+  }
+
+  moveToCourseReportPage(Student student) {
+    pageRoute.value += "/courses";
+    _arguments.value = student;
+  }
+
+  moveToAnnualeportPage(Student student) {
+    pageRoute.value += "/annual";
+    _arguments.value = student;
   }
 }
