@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
                   return Obx(() {
                     return _loginViewModel.isLogged.value
                         ? MainLayout()
-                        : const Login();
+                        :  Login();
                   });
                 }
               }

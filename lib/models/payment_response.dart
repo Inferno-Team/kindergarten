@@ -40,7 +40,7 @@ class Payment {
 
 class PaymentResponse {
   final bool status;
-  final errorNum;
+  final String? errorNum;
   final msg;
   final List<Payment> payments;
 

@@ -10,9 +10,10 @@ class Binding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => LoginViewModel());
-    Get.lazyPut(() => HomeViewModel());
+    // Get.lazyPut(() => HomeViewModel());
+    Get.put(HomeViewModel());
     Get.lazyPut(() => StudentViewModel());
-    Get.lazyPut(() => SettingsViewModel());
+    // Get.lazyPut(() => SettingsViewModel());
     Get.lazyPut(() => MyMapController());
   }
 }

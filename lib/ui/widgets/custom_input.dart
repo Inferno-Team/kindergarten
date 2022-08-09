@@ -42,7 +42,7 @@ class CustomInput extends StatelessWidget {
                 color: Colors.white,
               ),
               floatingLabelStyle: const TextStyle(
-                color: Color(0xFF4C85FF),
+                color: Colors.white,
               ),
               fillColor: const Color.fromARGB(255, 168, 196, 255),
               prefixIcon: Icon(icon, color: Colors.white),

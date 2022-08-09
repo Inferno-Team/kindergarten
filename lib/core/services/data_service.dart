@@ -158,7 +158,7 @@ class DataService {
     var routeName = '/get-payment';
     Uri uri = Uri.parse(apiUrl + route + routeName);
     http.Response response = await http
-        .post(uri, headers: {'auth-token': token}, body: {'id': "$studentId"});
+        .post(uri, headers: {'auth-token': token}, body: {'id': studentId.toString()});
     var body = response.body;
     try {
       var bodyJson = await json.decode(body);

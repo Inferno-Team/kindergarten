@@ -14,6 +14,7 @@ class PaymentLayout extends GetWidget<StudentViewModel> {
   @override
   Widget build(BuildContext context) {
     controller.getStudentPayment(student.id);
+    final name = student.gender == 1 ? "اسم الطالب":"اسم الطالبة";
     return Stack(
       children: [
         Container(
@@ -48,10 +49,22 @@ class PaymentLayout extends GetWidget<StudentViewModel> {
               children: [
                 const CustomText(
                   text: "الدفعات",
+                  margin: EdgeInsets.only(top: 30),
                   alignment: Alignment.topCenter,
                   color: Colors.white,
-                  fontSize: 21,
+                  fontSize: 28,
                   weight: FontWeight.w900,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CustomText(
+                  text:"${name} : ${student.name}",
+                  alignment: Alignment.topRight,
+                  color: Colors.white,
+                  fontSize: 17,
+                  weight: FontWeight.w900,
+                  margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 ),
                 for (Payment payment in res.payments)
                   CustomPayment(payment: payment)

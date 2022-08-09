@@ -49,8 +49,8 @@ dependencies:
   latlong2: ^0.8.1
 flutter_icons:
   android: true
-  image_path: "icons/kinder_logo.png"
-  adaptive_icon_background: "icons/kinder_logo.png"
+  image_path: "icons/logo.png"
+  adaptive_icon_background: "icons/logo.png"
 dev_dependencies:
   flutter_test:
     sdk: flutter

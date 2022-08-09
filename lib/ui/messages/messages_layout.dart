@@ -35,8 +35,8 @@ class MessageLayout extends GetWidget<HomeViewModel> {
                 children: [
                   const Center(
                     child: CustomText(
-                        text: "Messages",
-                        color: Colors.black,
+                        text: "الرسائل",
+                        color: Colors.white,
                         alignment: Alignment.center,
                         fontSize: 18,
                         weight: FontWeight.bold),
@@ -44,14 +44,11 @@ class MessageLayout extends GetWidget<HomeViewModel> {
                   for (var i = 0;
                       i < controller.messageResponse.value.length;
                       i++)
-                    if (i >=0 && i <4)
-                      for (var msg
-                          in controller.messageResponse.value[i])
+                    if (i >= 0 && i < 4)
+                      for (var msg in controller.messageResponse.value[i])
                         CustomMessage(message: msg)
-
                     else if (i == 4)
-                      for (var msg
-                          in controller.messageResponse.value[i])
+                      for (var msg in controller.messageResponse.value[i])
                         MessageTemplate(
                           message: msg,
                           onTap: () async => await controller.sendSMSTo(msg),
@@ -63,7 +60,6 @@ class MessageLayout extends GetWidget<HomeViewModel> {
                       message: msg,
                       onTap: () {},
                       toSend: true,
-                      
                     ),
                 ],
               );
@@ -91,7 +87,100 @@ class MessageLayout extends GetWidget<HomeViewModel> {
             ),
           ),
         ),
+        Positioned(
+          top: 30.0,
+          left: 8.0,
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              // show bottom sheet with input field to edit saved phone number
+              Get.bottomSheet(editNumberDialog(size),
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent);
+            },
+            elevation: 0,
+            label: const Text(
+              "تعديل رقم",
+              style: TextStyle(
+                fontSize: 11,
+              ),
+            ),
+            icon: const Icon(
+              Icons.edit,
+              size: 15,
+            ),
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget editNumberDialog(Size size) {
+    return Container(
+      height: size.height * 0.334,
+      width: size.width * 0.8,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: loginColors,
+          stops: [0.1, 0.4, 0.7, 0.9],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CustomText(
+            text: "تعديل رقم الجوال",
+            alignment: Alignment.center,
+            fontSize: 18,
+            weight: FontWeight.bold,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          TextField(
+            onSubmitted: (value) {
+              controller.phoneNumber.value = value;
+            },
+            controller: TextEditingController()
+              ..text = controller.phoneNumber.value,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              hintText: "رقم الجوال",
+              hintStyle: TextStyle(
+                color: Colors.white,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          RaisedButton(
+            onPressed: () =>controller.updatePhoneNumber(),
+            color: Colors.white,
+            child: const Text(
+              "تعديل",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

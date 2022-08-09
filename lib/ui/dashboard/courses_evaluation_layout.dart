@@ -10,6 +10,7 @@ class CoursesEvaluaionLayout extends GetWidget<StudentViewModel> {
   final Student student;
 
   CoursesEvaluaionLayout({required this.student});
+
   @override
   Widget build(BuildContext context) {
     controller.getStudentEvaluation(student.id);
@@ -46,7 +47,7 @@ class CoursesEvaluaionLayout extends GetWidget<StudentViewModel> {
               ));
             } else {
               return Container(
-                margin: const EdgeInsets.only(top: 32.0),
+                margin: const EdgeInsets.only(top: 64),
                 child: Padding(
                   padding: const EdgeInsets.all(0),
                   child: Column(
@@ -56,7 +57,11 @@ class CoursesEvaluaionLayout extends GetWidget<StudentViewModel> {
                         alignment: Alignment.topCenter,
                         color: Colors.white,
                         fontSize: 21,
+
                         weight: FontWeight.w900,
+                      ),
+                      const SizedBox(
+                        height: 64,
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.vertical,
@@ -97,7 +102,46 @@ List<DataRow> getRows(List<StudentEvaluation> value) => value.map((course) {
 
       return DataRow(cells: getCells(cells));
     }).toList();
-List<DataColumn> getColumns(List<String> value) =>
-    value.map((e) => DataColumn(label: Text(e))).toList();
-List<DataCell> getCells(List<String> cells) =>
-    cells.map((e) => DataCell(Text(e))).toList();
+
+List<DataColumn> getColumns(List<String> value) => value
+    .map((e) => DataColumn(
+            label: Text(
+          e,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        )))
+    .toList();
+
+List<DataCell> getCells(List<String> cells) => cells.map(
+      (e) {
+        var number = -1;
+        if (isNumeric(e)) {
+          number = int.parse(e);
+        }
+        return DataCell(
+          Text(
+            e,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: number == -1
+                  ? Colors.black.withAlpha(200)
+                  : number > 50
+                      ? Colors.greenAccent.withAlpha(200)
+                      : number == 100
+                          ? Colors.yellowAccent.withAlpha(200)
+                          : Colors.redAccent.withAlpha(200),
+            ),
+          ),
+        );
+      },
+    ).toList();
+
+bool isNumeric(String s) {
+  if (s == null) {
+    return false;
+  }
+  return int.tryParse(s) != null;
+}

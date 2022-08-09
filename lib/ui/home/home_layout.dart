@@ -18,10 +18,9 @@ import 'package:kindergarten/ui/widgets/custom_text.dart';
 import 'package:kindergarten/utils/constaince.dart';
 
 class Home extends GetWidget<HomeViewModel> {
-  Home({Key? key}) : super(key: key);
   final studentController =
       Get.put(StudentViewModel(), tag: "student_view_model_controller");
-
+//عرفنا بهل طريقة 2 كونترولر
   @override
   Widget build(BuildContext context) {
     const _logoSvg = 'assets/home_logo.svg';

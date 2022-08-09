@@ -14,7 +14,7 @@ class MainLayout extends GetWidget<HomeViewModel> {
     return Obx(
       () => Scaffold(
         body: IndexedStack(
-          children: [Home(), MessageLayout(), SettingsLayout()],
+          children: [Home(), MessageLayout(), LogoutLayout()],
           index: controller.index,
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -23,9 +23,9 @@ class MainLayout extends GetWidget<HomeViewModel> {
           onTap: controller.onTab,
           currentIndex: controller.index,
           items: [
-            _createNavigationItem(icon: Icons.home, label: "Home"),
-            _createNavigationItem(icon: Icons.message, label: "Messages"),
-            _createNavigationItem(icon: Icons.settings, label: "Settings"),
+            _createNavigationItem(icon: Icons.home, label: "الرئسية"),
+            _createNavigationItem(icon: Icons.message, label: "رسائل"),
+            _createNavigationItem(icon: Icons.logout, label: "تسجيل خروج"),
           ],
         ),
       ),

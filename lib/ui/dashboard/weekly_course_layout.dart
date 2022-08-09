@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kindergarten/core/view_models/student_view_model.dart';
 import 'package:kindergarten/models/student.dart';
 import 'package:kindergarten/models/weekly_course_response.dart';
+import 'package:kindergarten/ui/widgets/custom_text.dart';
 import 'package:kindergarten/utils/constaince.dart';
 
 class WeeklyLayout extends GetWidget<StudentViewModel> {
@@ -12,6 +13,7 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     controller.getWeeklyCourses(student.id);
     return Obx(() => Directionality(
           textDirection: TextDirection.rtl,
@@ -30,12 +32,42 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
                 ),
               ),
               Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: createCoursesTable(controller.weeklyCourses.value),
-                  ),
+                child: Column(
+                  children: [
+                    CustomText(
+                      margin: EdgeInsets.only(top: size.height * 0.15),
+                      text: 'جدول الحصص',
+                      fontSize: 30.0,
+                      color: Colors.white,
+                      alignment: Alignment.center,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomText(
+                          text: "الصف : ${student.levelName}",
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                        ),
+                        CustomText(
+                          text: "الشعبة : ${student.divisionName}",
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30,),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child:
+                            createCoursesTable(controller.weeklyCourses.value),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -69,8 +101,17 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
     );
   }
 
-  List<DataColumn> getColumns(List<String> value) =>
-      value.map((e) => DataColumn(label: Text(e))).toList();
+  List<DataColumn> getColumns(List<String> value) => value
+      .map(
+        (e) => DataColumn(
+          label: Text(
+            e,
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+        ),
+      )
+      .toList();
 
   List<DataRow> getRows(List<WeeklyCourse> value) => value.map((course) {
         final List<String> cells = [course.day];
@@ -81,6 +122,17 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
         return DataRow(cells: getCells(cells));
       }).toList();
 
-  List<DataCell> getCells(List<String> cells) =>
-      cells.map((e) => DataCell(Text(e))).toList();
+  List<DataCell> getCells(List<String> cells) => cells
+      .map(
+        (e) => DataCell(
+          Text(
+            e,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      )
+      .toList();
 }

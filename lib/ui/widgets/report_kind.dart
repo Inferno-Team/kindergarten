@@ -15,7 +15,7 @@ class CustomReportItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: TextDirection.ltr,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           child: Card(

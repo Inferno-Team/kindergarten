@@ -5,6 +5,7 @@ import 'package:kindergarten/core/services/database.dart';
 import 'package:kindergarten/models/message_response.dart';
 import 'package:kindergarten/models/student.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:kindergarten/ui/login/login_layout.dart';
 import 'package:kindergarten/utils/cache_manager.dart';
 
 // import 'package:sms/sms.dart';
@@ -22,8 +23,11 @@ class HomeViewModel extends GetxController with CacheManager {
   final _isMassesageLoading = false.obs;
 
   get args => _arguments.value;
+
   get index => _index.value;
+
   bool get isMassesageLoading => _isMassesageLoading.value;
+
   List<Student> get studentList => _studentList.value;
 
   @override
@@ -56,10 +60,13 @@ class HomeViewModel extends GetxController with CacheManager {
     sentLocalMessages.value = list.map((e) => Message.fromJson(e)).toList();
   }
 
-  onTab(int index) {
+  onTab(int index) async {
     _index.value = index;
     if (index == 0) getMyStudents();
-    if (index == 1) getMessages();
+    if (index == 1) {
+      await getPhoneNumber();
+      getMessages();
+    }
   }
 
   moveToStudentPage(Student student) {
@@ -154,5 +161,16 @@ class HomeViewModel extends GetxController with CacheManager {
   moveToAnnualeportPage(Student student) {
     pageRoute.value += "/annual";
     _arguments.value = student;
+  }
+
+  void logOut() {
+    removeToken();
+    Get.offAll(() => Login());
+  }
+
+  updatePhoneNumber() async {
+    var result = await _database.updatePhoneNumber(phoneNumber.value);
+    print("updatePhoneNumber $result");
+    Get.back();
   }
 }

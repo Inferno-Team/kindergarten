@@ -41,6 +41,21 @@ class DashboardLayout extends GetWidget<HomeViewModel> {
                     weight: FontWeight.w600,
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const CustomText(
+                  text:
+                  "خدماتي",
+                  alignment: Alignment.topCenter,
+                  fontSize: 21,
+                  color: Colors.white,
+                  weight: FontWeight.w600,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,

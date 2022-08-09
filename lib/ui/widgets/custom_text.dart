@@ -6,6 +6,7 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final Alignment alignment;
   final FontWeight weight;
+  final EdgeInsets margin;
 
   const CustomText({
     Key? key,
@@ -14,13 +15,14 @@ class CustomText extends StatelessWidget {
     this.fontSize = 16,
     this.alignment = Alignment.topLeft,
     this.weight = FontWeight.normal,
+    this.margin = const EdgeInsets.all(12.0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: alignment,
-      margin: const EdgeInsets.all(12.0),
+      margin: margin,
       child: Text(
         text,
         overflow: TextOverflow.ellipsis,

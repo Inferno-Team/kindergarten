@@ -21,7 +21,7 @@ class RemamberMe extends StatelessWidget {
           ),
         ),
         const CustomText(
-          text: 'Remamber Me',
+          text: 'تذكرني',
           color: Colors.white,
           fontSize: 14,
         )
