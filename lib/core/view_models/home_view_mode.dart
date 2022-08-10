@@ -21,6 +21,9 @@ class HomeViewModel extends GetxController with CacheManager {
   final localMessages = <Message>[].obs;
   final sentLocalMessages = <Message>[].obs;
   final _isMassesageLoading = false.obs;
+  final _parentName = "".obs;
+
+  get parentName => _parentName.value;
 
   get args => _arguments.value;
 
@@ -60,13 +63,23 @@ class HomeViewModel extends GetxController with CacheManager {
     sentLocalMessages.value = list.map((e) => Message.fromJson(e)).toList();
   }
 
-  onTab(int index) async {
+  onTab(int index)  {
     _index.value = index;
-    if (index == 0) getMyStudents();
+    if (index == 0) {
+       getMyName();
+      getMyStudents();
+    }
     if (index == 1) {
-      await getPhoneNumber();
+      getPhoneNumber();
       getMessages();
     }
+  }
+
+  getMyName() async {
+    final token = getToken() ?? '';
+    final userId = getUserId() ?? "-1";
+    final name = (await _service.getMyName(token, userId));
+    _parentName.value = name;
   }
 
   moveToStudentPage(Student student) {

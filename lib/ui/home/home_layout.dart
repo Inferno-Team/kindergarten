@@ -114,13 +114,13 @@ class Home extends GetWidget<HomeViewModel> {
                   margin: const EdgeInsets.only(
                     right: 24,
                   ),
-                  child: const CustomText(
+                  child: Obx(()=>CustomText(
                     alignment: Alignment.centerRight,
-                    text: "اسم الوالد",
+                    text: controller.parentName,
                     weight: FontWeight.w700,
                     fontSize: 21.0,
                     color: Colors.white,
-                  ),
+                  )),
                 ),
                 SizedBox(
                   height: size.height * 0.55,

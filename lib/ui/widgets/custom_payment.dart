@@ -24,22 +24,7 @@ class CustomPayment extends StatelessWidget {
             margin: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const CustomText(
-                        text: "نوع الدفعة : ",
-                        alignment: Alignment.topRight,
-                        fontSize: 18,
-                        weight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        text: payment.type,
-                        alignment: Alignment.topRight,
-                        fontSize: 18,
-                        weight: FontWeight.bold,
-                      )
-                    ]),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

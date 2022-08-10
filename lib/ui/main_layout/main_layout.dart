@@ -10,7 +10,7 @@ class MainLayout extends GetWidget<HomeViewModel> {
   
   @override
   Widget build(BuildContext context) {
-    controller.getMyStudents();
+    controller.onTab(0);
     return Obx(
       () => Scaffold(
         body: IndexedStack(

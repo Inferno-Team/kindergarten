@@ -1,18 +1,16 @@
 class Payment {
-  final int id;
-  final int studentId;
-  final int amountPaid;
-  final String type;
-  final String payNum;
+  final  id;
+  final  studentId;
+  final  amountPaid;
+  final  payNum;
   final DateTime? createdAt;
-  final String name;
+  final  name;
   final String convertedDate;
 
   Payment(
       {this.id = 0,
       this.studentId = 0,
       this.amountPaid = 0,
-      this.type = "",
       this.payNum = "",
       this.createdAt,
       this.name = "",
@@ -30,8 +28,7 @@ class Payment {
       id: json['id'],
       studentId: json['student_id'],
       amountPaid: json['amount_paid'],
-      type: json['type'],
-      payNum: json['pay_num'],
+      payNum: json['pay_num'] ?? "",
       createdAt: time,
       convertedDate: timeString,
     );
@@ -45,7 +42,7 @@ class PaymentResponse {
   final List<Payment> payments;
 
   PaymentResponse(
-      {this.status = false, this.errorNum, this.msg, required this.payments});
+      {this.status = false, this.errorNum, this.msg="", required this.payments});
 
   factory PaymentResponse.fromJson(dynamic json) {
     List<Payment> list;

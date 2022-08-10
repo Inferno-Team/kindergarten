@@ -36,6 +36,8 @@ class DataService {
       }).timeout(const Duration(seconds: 5));
       print(response.body);
       if (response.statusCode == 200) {
+        email = "";
+        password = "";
         return LoginResponse.fromJson(await json.decode(response.body));
       } else {
         print('something wrong $uri');
@@ -184,6 +186,23 @@ class DataService {
     } catch (e) {
       print('something wrong $e');
       return AnnualEvaluationResponse.empty();
+    }
+  }
+  Future<String>getMyName(token,id)async {
+    var routeName = '/get-parent-by-id';
+    Uri uri = Uri.parse(apiUrl + route + routeName);
+    try {
+      http.Response response = await http.post(uri,
+          body: {"id": "$id"}, headers: {"auth-token": token});
+      dynamic utf8Json = utf8.decode(response.bodyBytes);
+      var body = await json.decode(utf8Json);
+      print(body);
+      var name = body['users'][0]['real_name'] as String;
+      return name;
+
+    } catch (e) {
+      print('something wrong in get parent name $e');
+      return "";
     }
   }
 }

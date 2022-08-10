@@ -64,8 +64,11 @@ class CoursesEvaluaionLayout extends GetWidget<StudentViewModel> {
                         height: 64,
                       ),
                       SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: createCoursesTable(res.evaluation),
+                        scrollDirection: Axis.horizontal,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: createCoursesTable(res.evaluation),
+                        ),
                       ),
                     ],
                   ),
@@ -84,6 +87,7 @@ Widget createCoursesTable(List<StudentEvaluation> evaluation) {
     "اسم المادة",
     "درجات الاعمال",
     "الامتحان",
+    "الشهر",
   ];
   var rows = getRows(evaluation);
   var colms = getColumns(columns);
@@ -99,6 +103,7 @@ List<DataRow> getRows(List<StudentEvaluation> value) => value.map((course) {
       cells.add(course.courseName);
       cells.add(course.quizzes.toString());
       cells.add(course.quarterlyExam.toString());
+      cells.add(course.month.toString());
 
       return DataRow(cells: getCells(cells));
     }).toList();
@@ -109,7 +114,7 @@ List<DataColumn> getColumns(List<String> value) => value
           e,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 17,
+            fontSize: 15,
           ),
         )))
     .toList();
@@ -125,7 +130,7 @@ List<DataCell> getCells(List<String> cells) => cells.map(
             e,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 13,
               color: number == -1
                   ? Colors.black.withAlpha(200)
                   : number > 50

@@ -39,7 +39,7 @@ class ReportsPage extends GetWidget<StudentViewModel> {
             childAspectRatio: 1.105,
             children: [
               CustomReportItem(
-                text: 'تقرير سنوية',
+                text: 'تقرير سنوي',
                 isBordered: false,
                 onTap: () => _homeViewModel.moveToAnnualeportPage(student),
               ),

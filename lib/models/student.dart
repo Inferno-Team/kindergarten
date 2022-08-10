@@ -14,7 +14,7 @@ class Student {
   factory Student.fromJson(dynamic json) {
     var id = json['id'] ?? -1;
     var name = json['name'] ?? "";
-    var gender = json['gender'] ?? 0;
+    var gender = int.parse(json['gender']) ;
     var levelName = json['level_Name'] ?? "";
     var divisionName = json['division_Name'] ?? "";
 

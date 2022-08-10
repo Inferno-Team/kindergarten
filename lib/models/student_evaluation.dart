@@ -2,16 +2,20 @@ class StudentEvaluation {
   final String courseName;
   final int quizzes;
   final int quarterlyExam;
+  final month;
 
   StudentEvaluation(
       {required this.courseName,
       required this.quizzes,
-      required this.quarterlyExam});
+      required this.quarterlyExam,
+      this.month});
+
   factory StudentEvaluation.fromJson(dynamic json) {
     return StudentEvaluation(
         courseName: json['course_name'],
         quizzes: json['quizzes'],
-        quarterlyExam: json['quarterly_exam']);
+        quarterlyExam: json['quarterly_exam'],
+        month: json['month'].toString() ?? "");
   }
 }
 
@@ -20,11 +24,13 @@ class EvaluationResponse {
   final String errorNum;
   final String msg;
   final List<StudentEvaluation> evaluation;
+
   EvaluationResponse(
       {required this.status,
       required this.errorNum,
       required this.msg,
       required this.evaluation});
+
   factory EvaluationResponse.fromJson(dynamic json) {
     var list = (json['evaluation'] == null) ? [] : (json['evaluation'] as List);
     var evaluation = list.map((e) => StudentEvaluation.fromJson(e)).toList();
@@ -36,6 +42,7 @@ class EvaluationResponse {
       evaluation: evaluation,
     );
   }
+
   factory EvaluationResponse.empty() {
     return EvaluationResponse(
         errorNum: '', status: false, msg: 'Error', evaluation: []);
@@ -54,12 +61,13 @@ class StudentAnnualEvaluation {
     required this.finalExam,
     required this.finalMark,
   });
+
   factory StudentAnnualEvaluation.fromJson(dynamic json) {
     return StudentAnnualEvaluation(
       courseName: json['course_name'],
-      mark: json['mark'],
-      finalExam: json['final_exam'],
-      finalMark: json['final_mark'],
+      mark: int.parse(json['quizzes_sum']),
+      finalExam: int.parse(json['quarterly_exam_sum']),
+      finalMark: int.parse(json['quizzes_sum']) + int.parse(json['quarterly_exam_sum']),
     );
   }
 }
@@ -69,13 +77,15 @@ class AnnualEvaluationResponse {
   final String errorNum;
   final String msg;
   final List<StudentAnnualEvaluation> evaluation;
+
   AnnualEvaluationResponse(
       {required this.status,
       required this.errorNum,
       required this.msg,
       required this.evaluation});
+
   factory AnnualEvaluationResponse.fromJson(dynamic json) {
-    var list = (json['annual-eval'] == null) ? [] : (json['annual-eval'] as List);
+    var list = (json['users'] == null) ? [] : (json['users'] as List);
     var evaluation =
         list.map((e) => StudentAnnualEvaluation.fromJson(e)).toList();
 
@@ -86,6 +96,7 @@ class AnnualEvaluationResponse {
       evaluation: evaluation,
     );
   }
+
   factory AnnualEvaluationResponse.empty() {
     return AnnualEvaluationResponse(
         errorNum: '', status: false, msg: 'Error', evaluation: []);

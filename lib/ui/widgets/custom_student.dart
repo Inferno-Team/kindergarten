@@ -47,7 +47,7 @@ class CustomStudent extends StatelessWidget {
                       color: Colors.white,
                     ),
                      CustomText(
-                      text: ": الصف ",
+                      text: ": الشعبة ",
                       alignment: Alignment.centerRight,
                       fontSize: 18,
                       color: Colors.white,
@@ -55,7 +55,7 @@ class CustomStudent extends StatelessWidget {
                   ],
                 ),
                 CustomText(
-                  text: "الشعبة :  ${student.levelName}",
+                  text: "الطفولة :  ${student.levelName}",
                   fontSize: 18,
                   alignment: Alignment.centerRight,
                   color: Colors.white,

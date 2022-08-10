@@ -1,5 +1,5 @@
 class WeeklyCourse {
-  final String day;
+  final  day;
   final List<String> courses;
 
   WeeklyCourse(this.day, this.courses);

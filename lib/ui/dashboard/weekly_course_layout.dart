@@ -36,7 +36,7 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
                   children: [
                     CustomText(
                       margin: EdgeInsets.only(top: size.height * 0.15),
-                      text: 'جدول الحصص',
+                      text: 'جدول الدوام الأسبوعي',
                       fontSize: 30.0,
                       color: Colors.white,
                       alignment: Alignment.center,
@@ -114,7 +114,7 @@ class WeeklyLayout extends GetWidget<StudentViewModel> {
       .toList();
 
   List<DataRow> getRows(List<WeeklyCourse> value) => value.map((course) {
-        final List<String> cells = [course.day];
+        final List<String> cells = [course.day.toString()];
 
         for (var item in course.courses) {
           cells.add(item);
