@@ -20,6 +20,7 @@ import 'package:kindergarten/utils/constaince.dart';
 class Home extends GetWidget<HomeViewModel> {
   final studentController =
       Get.put(StudentViewModel(), tag: "student_view_model_controller");
+
 //عرفنا بهل طريقة 2 كونترولر
   @override
   Widget build(BuildContext context) {
@@ -90,17 +91,24 @@ class Home extends GetWidget<HomeViewModel> {
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ClipPath(
-              clipper: CustomClipPath(),
-              child: Container(
-                width: size.width,
-                height: size.height * 0.67,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: loginColors,
-                    stops: [0.1, 0.4, 0.7, 0.9],
+            TweenAnimationBuilder(
+              tween: Tween(begin: 0.0, end: 1.0),
+              duration: const Duration(milliseconds: 1500),
+              builder: (context, double val, child) {
+                return Opacity(opacity: val, child: child);
+              },
+              child: ClipPath(
+                clipper: CustomClipPath(),
+                child: Container(
+                  width: size.width,
+                  height: size.height * 0.67,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: loginColors,
+                      stops: [0.1, 0.4, 0.7, 0.9],
+                    ),
                   ),
                 ),
               ),
@@ -114,13 +122,22 @@ class Home extends GetWidget<HomeViewModel> {
                   margin: const EdgeInsets.only(
                     right: 24,
                   ),
-                  child: Obx(()=>CustomText(
-                    alignment: Alignment.centerRight,
-                    text: controller.parentName,
-                    weight: FontWeight.w700,
-                    fontSize: 21.0,
-                    color: Colors.white,
-                  )),
+                  child: Obx(() => TweenAnimationBuilder(
+                        tween: Tween(begin: 1.0, end: 0.0),
+                        duration: Duration(milliseconds: 1000),
+                        builder: (context, double value, child) {
+                          return Transform.translate(
+                              offset: Offset(value * size.width * 0.1, 0),
+                              child: child);
+                        },
+                        child: CustomText(
+                          alignment: Alignment.centerRight,
+                          text: controller.parentName,
+                          weight: FontWeight.w700,
+                          fontSize: 21.0,
+                          color: Colors.white,
+                        ),
+                      )),
                 ),
                 SizedBox(
                   height: size.height * 0.55,
