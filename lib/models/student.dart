@@ -3,7 +3,8 @@ class Student {
   final String name;
   final String levelName;
   final String divisionName;
-  final int gender;
+  final String gender;
+
   Student(
       {required this.id,
       required this.name,
@@ -14,7 +15,7 @@ class Student {
   factory Student.fromJson(dynamic json) {
     var id = json['id'] ?? -1;
     var name = json['name'] ?? "";
-    var gender = int.parse(json['gender']) ;
+    var gender = json['gender'] ?? "";
     var levelName = json['level_Name'] ?? "";
     var divisionName = json['division_Name'] ?? "";
 

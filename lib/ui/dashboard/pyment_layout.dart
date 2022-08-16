@@ -4,6 +4,7 @@ import 'package:kindergarten/core/view_models/student_view_model.dart';
 import 'package:kindergarten/models/payment_response.dart';
 import 'package:kindergarten/models/student.dart';
 import 'package:kindergarten/ui/widgets/custom_payment.dart';
+import 'package:kindergarten/ui/widgets/custom_summarize.dart';
 import 'package:kindergarten/ui/widgets/custom_text.dart';
 import 'package:kindergarten/utils/constaince.dart';
 
@@ -11,10 +12,11 @@ class PaymentLayout extends GetWidget<StudentViewModel> {
   final Student student;
 
   const PaymentLayout({Key? key, required this.student}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     controller.getStudentPayment(student.id);
-    final name = student.gender == 1 ? "اسم الطالب":"اسم الطالبة";
+    final name = student.gender == "ذكر" ? "اسم الطالب" : "اسم الطالبة";
     return Stack(
       children: [
         Container(
@@ -59,13 +61,15 @@ class PaymentLayout extends GetWidget<StudentViewModel> {
                   height: 5,
                 ),
                 CustomText(
-                  text:"${name} : ${student.name}",
+                  text: "${name} : ${student.name}",
                   alignment: Alignment.topRight,
                   color: Colors.white,
                   fontSize: 17,
                   weight: FontWeight.w900,
-                  margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 ),
+                CustomSummarize(summarize: res.summarize),
                 for (Payment payment in res.payments)
                   CustomPayment(payment: payment)
               ],

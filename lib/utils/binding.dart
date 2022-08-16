@@ -9,7 +9,7 @@ import 'package:kindergarten/core/view_models/student_view_model.dart';
 class Binding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => LoginViewModel());
+    Get.put(LoginViewModel());
     // Get.lazyPut(() => HomeViewModel());
     Get.put(HomeViewModel());
     Get.lazyPut(() => StudentViewModel());

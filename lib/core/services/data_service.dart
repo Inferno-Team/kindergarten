@@ -19,7 +19,7 @@ class DataService {
   }
   DataService._internal();
 
-  final String apiUrl = "http://192.168.43.113:8000";
+  final String apiUrl = "http://192.168.43.114:8000";
   // final String route = "/api";
   // final String apiUrl = "http://192.168.1.7:8000";
   final String route = "/api";
@@ -111,6 +111,7 @@ class DataService {
     try {
       http.Response response = await http.post(uri,
           headers: {'auth-token': token}, body: {'id': "$studentId"});
+
       dynamic utf8Json = utf8.decode(response.bodyBytes);
       var body = await json.decode(utf8Json);
       return WeeklyCoursesResponse.fromJson(body);
@@ -124,9 +125,7 @@ class DataService {
   Future<EvaluationResponse> getStudentEvaluation(
       String token, int studentId) async {
     var routeName = '/get-evaluation';
-
     final Uri uri = Uri.parse(apiUrl + route + routeName);
-    // Uri.parse("http://192.168.43.113/kinder/get-evaluation.json");
     try {
       http.Response response = await http.post(uri,
           body: {"id": "$studentId"}, headers: {"auth-token": token});
@@ -159,15 +158,15 @@ class DataService {
   Future<PaymentResponse> getStudentPayment(String token, int studentId) async {
     var routeName = '/get-payment';
     Uri uri = Uri.parse(apiUrl + route + routeName);
-    http.Response response = await http
-        .post(uri, headers: {'auth-token': token}, body: {'id': studentId.toString()});
+    http.Response response = await http.post(uri,
+        headers: {'auth-token': token}, body: {'id': studentId.toString()});
     var body = response.body;
     try {
       var bodyJson = await json.decode(body);
       return PaymentResponse.fromJson(bodyJson);
     } catch (e) {
       print('Error $e');
-      return PaymentResponse(payments: []);
+      return PaymentResponse(payments: [], summarize: PaymentSummarize.empty());
     }
   }
 
@@ -188,18 +187,18 @@ class DataService {
       return AnnualEvaluationResponse.empty();
     }
   }
-  Future<String>getMyName(token,id)async {
+
+  Future<String> getMyName(token, id) async {
     var routeName = '/get-parent-by-id';
     Uri uri = Uri.parse(apiUrl + route + routeName);
     try {
-      http.Response response = await http.post(uri,
-          body: {"id": "$id"}, headers: {"auth-token": token});
+      http.Response response = await http
+          .post(uri, body: {"id": "$id"}, headers: {"auth-token": token});
       dynamic utf8Json = utf8.decode(response.bodyBytes);
       var body = await json.decode(utf8Json);
       print(body);
       var name = body['users'][0]['real_name'] as String;
       return name;
-
     } catch (e) {
       print('something wrong in get parent name $e');
       return "";

@@ -29,6 +29,8 @@ class LoginViewModel extends GetxController with CacheManager {
     if (loginResponse.value.status) {
       await saveToken(loginResponse.value.parent.token,
           loginResponse.value.parent.id, remamberMe.value);
+      email.value = "";
+      password.value = "";
       Get.offAll(() => MainLayout());
     } else {
       Fluttertoast.showToast(

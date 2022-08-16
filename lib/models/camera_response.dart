@@ -16,7 +16,7 @@ class CameraResponse {
     var status = json['status'] ?? false;
     var errorNumber = json['errNum'] ?? "0";
     var msg = json['msg'] ?? "";
-    var cameraIP = json['camera'][0]['IP'] ?? "";
+    var cameraIP = json['camera'][0]['Camera_IP'] ?? "";
     return CameraResponse(
         status: status, errorNumber: errorNumber, msg: msg, cameraIP: cameraIP);
   }

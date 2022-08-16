@@ -14,14 +14,18 @@ class StudentViewModel extends GetxController with CacheManager {
   final evaluation = EvaluationResponse.empty().obs;
   final annualEvaluation = AnnualEvaluationResponse.empty().obs;
   final _isLoading = false.obs;
+
   bool get isLoading => _isLoading.value;
-  final paymentResponse = PaymentResponse(payments: []).obs;
+  final paymentResponse =
+      PaymentResponse(payments: [], summarize: PaymentSummarize.empty()).obs;
   final Rx<VlcPlayerController> _liveController =
       VlcPlayerController.network('').obs;
+
   VlcPlayerController get liveController => _liveController.value;
 
   getCameraIP(int studentId) async {
     final response = await service.getCameraIP(getToken()!, studentId);
+    print(response.cameraIP);
     if (response.status) {
       cameraIP.value = response.cameraIP;
       _liveController.value.dispose();
@@ -60,7 +64,6 @@ class StudentViewModel extends GetxController with CacheManager {
     annualEvaluation.value = response;
     if (!response.status) Fluttertoast.showToast(msg: response.msg);
     _isLoading.value = false;
-    
   }
 
   getStudentPayment(int studentId) async {
